@@ -20,7 +20,7 @@ elForm.addEventListener('submit', function (e) {
       <h5 class="card-title">${elInputs[0].value}</h5>
       <h5 class="card2">${elInputs[1].value}</h5>
       <p class="card-text">${elInputs[2].value}</p>
-      <a class="btn btn-primary links">${elInputs[3].value}</a>
+      <a class="btn btn-primary links">+${elInputs[3].value}</a>
     </div>`;
     elList.appendChild(fatherDiv);
     let ss = {
@@ -49,7 +49,7 @@ elForm.addEventListener('submit', function (e) {
     }
   }else if(idf == true){
     elInputs[3].style.border ='1px solid red';
-    elspan.textContent = `Bu Raqam Mavjut  ${elInputs[3].value}`;
+    elspan.textContent = `Bu Raqam Mavjut  +${elInputs[3].value}`;
   }
 });
 elSelect.addEventListener('change', function (e) {
@@ -80,7 +80,7 @@ function addtag(item) {
       <h5 class="card-title">${i.fn}</h5>
       <h5 class="card2">${i.ln}</h5>
       <p class="card-text">${i.cl}</p>
-      <a class="btn btn-primary links">${i.ph}</a>
+      <a class="btn btn-primary links">+${i.ph}</a>
     </div>`;
     elList.appendChild(fatherDiv);
     fatherDiv.style.display = 'flex';
