@@ -3,91 +3,85 @@ let elForm = document.querySelector('.form');
 let elList = document.querySelector('.in__list');
 let elSelect = document.querySelector('.form-select');
 let btn = document.querySelector('.btn2');
-let family = [];
-let school = [];
-let friend = [];
+let elspan = document.querySelector('.span1');
 let all = [];
 elForm.addEventListener('submit', function (e) {
   e.preventDefault();
-  let fatherDiv = document.createElement('div');
-  fatherDiv.className = 'card';
-  let innerDiv = document.createElement('div');
-  innerDiv.className = 'card-body';
-  fatherDiv.appendChild(innerDiv);
-  let title = document.createElement('h5');
-  title.className = 'card-title';
-  title.appendChild(document.createTextNode(elInputs[0].value));
-  innerDiv.appendChild(title);
-  let title2 = document.createElement('h5');
-  title2.className = 'card2';
-  title2.appendChild(document.createTextNode(elInputs[1].value));
-  innerDiv.appendChild(title2);
-  let intext = document.createElement('p');
-  intext.className = 'card-text';
-  intext.appendChild(document.createTextNode(elInputs[2].value));
-  innerDiv.appendChild(intext);
-  let link = document.createElement('a');
-  link.className = 'btn btn-primary links';
-  link.appendChild(document.createTextNode(elInputs[3].value));
-  innerDiv.appendChild(link);
-  let ss = {
-    fn: title,
-    ln: title2,
-    cl: intext,
-    ph: link
-  };
-  if (elInputs[2].value == 'Famliy') {
+  let idf = all.some(function (num) {
+    return num.ph == elInputs[3].value;
+  });
+  if (idf == false) {
+    elspan.textContent = '';
+    elInputs[3].style.border ='1px solid #ced4da';
+    let fatherDiv = document.createElement('div');
+    fatherDiv.className = 'card';
+    fatherDiv.innerHTML = `
+    <div class="card-body">
+      <h5 class="card-title">${elInputs[0].value}</h5>
+      <h5 class="card2">${elInputs[1].value}</h5>
+      <p class="card-text">${elInputs[2].value}</p>
+      <a class="btn btn-primary links">${elInputs[3].value}</a>
+    </div>`;
     elList.appendChild(fatherDiv);
-    family[family.length] = ss;
-    all[all.length] = ss;
-  }
-  else if (elInputs[2].value == 'School') {
-    elList.appendChild(fatherDiv);
-    school[school.length] = ss;
-    all[all.length] = ss;
-  }
-  else if (elInputs[2].value == 'Friend') {
-    elList.appendChild(fatherDiv);
-    friend[friend.length] = ss;
-    all[all.length] = ss;
-  }
-  for(let i of elInputs){
-    i.value = "";
+    let ss = {
+      fn: elInputs[0].value,
+      ln: elInputs[1].value,
+      cl: elInputs[2].value,
+      ph: elInputs[3].value,
+      id: ''};
+    if (elInputs[2].value == 'Famliy') {
+      elList.appendChild(fatherDiv);
+      ss.id = 1;
+      all.push(ss);
+    }
+    else if (elInputs[2].value == 'School') {
+      elList.appendChild(fatherDiv);
+      ss.id = 2;
+      all.push(ss);
+    }
+    else if (elInputs[2].value == 'Friend') {
+      elList.appendChild(fatherDiv);
+      ss.id = 3;
+      all.push(ss);
+    }
+    for (let i of elInputs) {
+      i.value = "";
+    }
+  }else if(idf == true){
+    elInputs[3].style.border ='1px solid red';
+    elspan.textContent = `Bu Raqam Mavjut  ${elInputs[3].value}`;
   }
 });
 elSelect.addEventListener('change', function (e) {
-  if (e.target.value == '1') {
-    main(family);
-  }
-  else if(e.target.value == '2'){
-    main(school);
-  }
-  else if(e.target.value == '3'){
-    main(friend);
-  }
-  else if(e.target.value == '0'){
-    main(all);
+  if (e.target.value == '0') {
+    main(all, '1', '2', '3', '0');
+  } else {
+    main(all, e.target.value);
   }
 });
-function main(item){
+function main(item, ...val) {
   let cards = document.querySelectorAll('.card');
   cards.forEach(function (item) {
     item.style.display = 'none';
   });
-  for(let i of item){
+  if (val.length == 1) {
+    let items = item.filter((el) => el.id == val);
+    addtag(items);
+  } else {
+    addtag(item);
+  }
+}
+function addtag(item) {
+  for (let i of item) {
     let fatherDiv = document.createElement('div');
     fatherDiv.className = 'card';
-    let innerDiv = document.createElement('div');
-    innerDiv.className = 'card-body';
-    let fn = i.fn;
-    innerDiv.appendChild(fn);
-    let ln = i.ln;
-    innerDiv.appendChild(ln);
-    let cl = i.cl;
-    innerDiv.appendChild(cl);
-    let ph = i.ph;
-    innerDiv.appendChild(ph);
-    fatherDiv.appendChild(innerDiv);
+    fatherDiv.innerHTML = `
+    <div class="card-body">
+      <h5 class="card-title">${i.fn}</h5>
+      <h5 class="card2">${i.ln}</h5>
+      <p class="card-text">${i.cl}</p>
+      <a class="btn btn-primary links">${i.ph}</a>
+    </div>`;
     elList.appendChild(fatherDiv);
     fatherDiv.style.display = 'flex';
   }
